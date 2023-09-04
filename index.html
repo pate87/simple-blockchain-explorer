@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blockchain Explorer</title>
+
+    <!-- tailwindcss -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="theme_appearance.js"></script>
+
+</head>
+<body class="bg-white">
+    <header>
+        <h1 class="text-3xl font-bold text-center">Blockchain Explorer</h1>
+
+    </header>
+    <div id="table" class="container mx-auto max-witdth px-4 border-solid border-2 border-sky-500 rounded-lg">
+    </div>
+    
+    <script type="module">
+        import { ethers } from "https://cdnjs.cloudflare.com/ajax/libs/ethers/6.7.0/ethers.min.js";
+        
+        /**
+         * @dev Insert RPC Provider API URL
+         */
+        const provider = new ethers.JsonRpcProvider("");
+
+        async function main() {
+
+            provider.on("block", async (blockNumber) => {
+
+                // const blockNumber = await provider.getBlockNumber()
+    
+                console.log(blockNumber)
+
+                const blockInfo = await provider.getBlock(blockNumber);
+                
+                const number = blockInfo.number
+                const hash = blockInfo.hash
+                const timestamp = blockInfo.timestamp
+        
+                let textnode = ""
+                
+                textnode = `Block Number ${number} Block Hash: ${hash} Block Timestamp: ${timestamp}`;
+                // const textnode = `<tr><td> ${number} </td><td> ${hash} </td><td> ${timestamp} </td></tr>`;
+                
+                const newDiv = document.createElement("div");
+        
+                const node = document.createTextNode(textnode)
+        
+                newDiv.appendChild(node)
+                
+                document.querySelector("#table").appendChild(newDiv)
+        
+                // document.querySelector("#table").innerHTML = textnode
+
+            })
+        }
+        // main()
+    </script>
+</body>
+</html>
